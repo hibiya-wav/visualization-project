@@ -3,6 +3,7 @@ import './App.css';
 import FileUpload from "./Cleaned_Mobiles_Dataset_Cleaned_Mobiles_Dataset.csv";
 import ProcessData from "./ProcessData";
 import BarChart from "./BarChart";
+import ScatterPlot from "./ScatterPlot";
 
 class App extends Component {
     constructor(props) {
@@ -26,6 +27,7 @@ class App extends Component {
         return (
             <div className="parent">
                 <BarChart csv_data={this.state.data}></BarChart>
+                <ScatterPlot csv_data = {this.state.data}></ScatterPlot>
             </div>
         )
     }
