@@ -25,9 +25,16 @@ class App extends Component {
 
     render() {
         return (
-            <div className="parent">
-                <BarChart csv_data={this.state.data}></BarChart>
-                <ScatterPlot csv_data={this.state.data}></ScatterPlot>
+            <div>
+                <div className="groupInfo">
+                    <p>Group #: 9</p>
+                    <p>Group Members: Jeremy Granizo, Rahul Patel, Alamdar Qanoongo,
+                        Daniel Santos Martinez </p>
+                </div>
+                <div className="parent">
+                    <BarChart csv_data={this.state.data}></BarChart>
+                    <ScatterPlot csv_data={this.state.data}></ScatterPlot>
+                </div>
             </div>
         )
     }
