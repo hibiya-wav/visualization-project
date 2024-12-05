@@ -31,9 +31,9 @@ class BarChart extends Component {
         const svg = d3.select(this.chartRef.current)
             .append("svg")
             .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+            .attr("height", height + margin.top + margin.bottom + 100)
             .append("g")
-            .attr("transform", `translate(${margin.left},${margin.top})`);
+            .attr("transform", `translate(${margin.left},${margin.top * 2})`);
 
         // representing the data just like our document states in an ascending order bar chart
         const groupedData = d3.group(data, d => d.Brand);
@@ -42,7 +42,7 @@ class BarChart extends Component {
             "Discount price (USD)": d3.mean(value, d => d["Discount price (USD)"])
         }));
 
-        // const sortedData = data.sort((a, b) => b["Discount price (USD)"] - a["Discount price (USD)"]);
+        // const sortedData = data.sort((a, b) => b["Discount price (USD)"] - a["Discount price (USD)"]); doesnt work,
         const sortedData = averagedData.sort((a, b) => a["Discount price (USD)"] - b["Discount price (USD)"]);
 
         // xScale definition
@@ -103,6 +103,15 @@ class BarChart extends Component {
             .attr("transform", `translate(${width / 2}, ${height + margin.top + 70})`)
             .style("text-anchor", "middle")
             .text("Brand");
+
+        // Appended the title to the bar chart
+        svg
+            .append("text")
+            .attr("x", width / 2)
+            .attr("y", margin.top - 30)
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .text("Avg. Discouted Price By Brand");
     }
 
     render() {

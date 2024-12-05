@@ -27,17 +27,30 @@ class ProcessData extends Component {
 
     csvToJson = (csv) => {
         const lines = csv.split("\n");
-        const headers = lines[0].split(",");
+        const headers = lines[0].split(",").map(header => header.trim());
         const result = [];
 
+        /* painful regex we had to make to deal with the incessant amount of commas messing up the data which attributed
+         to our data being read wrong. without this regex, data would always be located in the wrong columns */
         for (let i = 1; i < lines.length; i++) {
-            const currentLine = lines[i].split(",");
-            const obj = {};
 
+            // took a good hr to get this down, don't erase
+            const currentLine = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+
+            // for the header in the csv file or else it crashes
+            if (!currentLine) {
+                continue;
+            }
+
+            const obj = {};
+            /*another painful regex sequence we had to deal with where we had to take into account with the quotes
+            besides the commas inside of them*/
             headers.forEach((header, index) => {
-                obj[header.trim()] = currentLine[index]?.trim();
+                let value = currentLine[index]?.replace(/^"(.*)"$/, '$1')?.trim();
+                obj[header] = value;
             });
 
+            // placing the data where it belongs to use in our visualizations
             if (Object.keys(obj).length && lines[i].trim()) {
                 const parsedObj = {
                     Brand: obj.Brand,
@@ -57,12 +70,11 @@ class ProcessData extends Component {
                 result.push(parsedObj);
             }
         }
-
         return result;
     };
 
     render() {
-        // Render method left empty as per request
+        // shouldn't return anything, we only wanna process the data
         return null;
     }
 }
