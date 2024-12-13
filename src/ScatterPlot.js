@@ -25,6 +25,8 @@ class ScatterPlot extends Component {
         const margin = {top: 20, right: 20, bottom: 50, left: 35};
         const width = 370 - margin.left - margin.right;
         const height = 300 - margin.top - margin.bottom;
+        const innerWidth = width - margin.left - margin.right; 
+        const innerHeight = height - margin.top - margin.bottom; 
 
         d3.select(this.chartRef.current).selectAll("*").remove();
 
@@ -33,13 +35,20 @@ class ScatterPlot extends Component {
         // real scale
         const xScale = d3.scaleLinear().domain([0, 450]).range([0, width]);
         const yScale = d3.scaleLinear().domain([0, 5]).range([height, 0]);
-
+        const brands = data.map(d => d.Brand);
+        const uniqueBrands = Array.from(new Set(brands));
+        const colorScale = d3.scaleOrdinal()
+                .domain(uniqueBrands)
+                .range(
+                uniqueBrands.map((_, i) => d3.interpolateRainbow(i / uniqueBrands.length))
+                    );
         const groupedData = d3.group(data, (d) => d.Brand);
         const averagedData = Array.from(groupedData, ([key, value]) => ({
             Brand: key,
             "Average Storage": d3.mean(value, (d) => +d["Storage (GB)"]),
             "Average Stars": d3.mean(value, (d) => +d.Stars)
         }));
+       
 
         const svg = d3
             .select(this.chartRef.current)
@@ -113,6 +122,7 @@ class ScatterPlot extends Component {
             .style("stroke-opacity", "0.5")
 
         // the plots themselves
+         const tooltip = d3.select(".tooltip");
         container
             .selectAll("circle")
             .data(averagedData)
@@ -120,8 +130,54 @@ class ScatterPlot extends Component {
             .attr("cx", (d) => xScale(d["Average Storage"]))
             .attr("cy", (d) => yScale(d["Average Stars"]))
             .attr("r", 5)
-            .attr("fill", "#69b3a2");
-
+            .attr("fill", d => colorScale(d.Brand))
+             .on("mouseover", function(event, d) {
+                            d3.select(this)
+                                .attr("stroke", "#000")
+                                .attr("stroke-width", 2);
+            
+                            // Debugging log
+                            console.log("Hovered Data:", d.data);
+            
+                            // Show the tooltip
+                            tooltip.transition()
+                                .duration(200)
+                                .style("opacity", 0.9);
+            
+                            // Populate the tooltip with product details
+                            tooltip.html(`
+                                <strong>Brand:</strong> ${d.Brand || "N/A"}<br/>
+                                <strong>Average Storage:</strong> ${d["Average Storage"] || "N/A"} GB<br/>
+                                <strong>Average Ratings:</strong> ${d["Average Stars"] || "N/A"}<br/>
+                            `);
+                        })
+                        .on("mousemove", function(event, d) {
+                            // Get mouse coordinates relative to the viewport
+                            const [mouseX, mouseY] = d3.pointer(event, document.body);
+            
+                            // Define offsets to prevent the tooltip from covering the cursor
+                       
+            
+                            // Calculate the tooltip's position
+                            let left = mouseX+10;
+                            let top = mouseY-150 
+            
+                         
+                            // Apply the calculated positions
+                            tooltip
+                                .style("left", `${left}px`)
+                                .style("top", `${top}px`);
+                        })
+                        .on("mouseout", function(event, d) {
+                            d3.select(this)
+                                .attr("stroke", "#fff")
+                                .attr("stroke-width", 1);
+            
+                            // Hide the tooltip
+                            tooltip.transition()
+                                .duration(500)
+                                .style("opacity", 0);
+                        });
 
         // select title being output, will be changed later to color scale because it still cluters
         const brandTitleOutput = ["VOX", "KARBONN", "ITEL", "LAVA", "CMF", "GOOGLE", "APPLE", "HONOR", "XIAOMI"]
@@ -135,6 +191,47 @@ class ScatterPlot extends Component {
             .style("font-size", "10px")
             .style("fill", "black")
             .text((d) => d.Brand);
+      const legendMargin = { top: 20, right: 30, bottom: 20, left: 50 };
+            const legendX = innerWidth + legendMargin.left-15;
+            const legendY = 80;
+            const legendWidth = 150;
+            const legendHeight = innerHeight;
+    
+            // Append a group for the legend
+            const legendGroup = d3.select(this.chartRef.current).select("svg")
+                .append("g")
+                .attr("transform", `translate(${legendX}, ${legendY})`)
+                .attr("class", "legend");
+    
+            // Add a title to the legend
+            legendGroup.append("text")
+                .attr("x", 0)
+                .attr("y", -10)
+                .attr("text-anchor", "start")
+                .attr("font-size", "12px")
+                .attr("font-weight", "bold")
+                .text("Brands");
+    
+    const legendContainer = legendGroup.append("foreignObject")
+    .attr("width", legendWidth)
+    .attr("height", legendHeight)
+    .append("xhtml:div")
+    .attr("style", "overflow-y: scroll; height: " + (legendHeight - 30) + "px;");
+
+// Append legend items
+uniqueBrands.forEach((brand, i) => {
+    const legendItem = legendContainer.append("div")
+        .attr("class", "legend-item")
+        .attr("style", "display: flex; align-items: center; margin-bottom: 5px;");
+
+    legendItem.append("div")
+        .attr("class", "legend-color")
+        .attr("style", `width: 14px; height: 14px; background-color: ${colorScale(brand)}; margin-right: 8px; flex-shrink: 0;`);
+
+    legendItem.append("span")
+        .text(brand)
+        .attr("style", "font-size: 12px;");
+});
     }
 
     render() {
