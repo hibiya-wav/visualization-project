@@ -22,9 +22,9 @@ class ScatterPlot extends Component {
         if (!data || data.length === 0) return;
 
         // dimensions of the scatter plot
-        const margin = {top: 20, right: 30, bottom: 50, left: 60};
-        const width = 700 - margin.left - margin.right;
-        const height = 500 - margin.top - margin.bottom;
+        const margin = {top: 20, right: 20, bottom: 50, left: 35};
+        const width = 370 - margin.left - margin.right;
+        const height = 300 - margin.top - margin.bottom;
 
         d3.select(this.chartRef.current).selectAll("*").remove();
 
@@ -44,7 +44,7 @@ class ScatterPlot extends Component {
         const svg = d3
             .select(this.chartRef.current)
             .append("svg")
-            .attr("width", width + margin.left + margin.right)
+            .attr("width", width + margin.left + margin.right+50)
             .attr("height", height + margin.top + margin.bottom + 100)
             .append("g")
             .attr("transform", `translate(${margin.left},${margin.top})`);
