@@ -22,9 +22,9 @@ class BarChart extends Component {
         if (!data || data.length === 0) return;
 
         // dimensions of the bar chart
-        const margin = {top: 20, right: 30, bottom: 150, left: 60};
-        const width = 700 - margin.left - margin.right;
-        const height = 500 - margin.top - margin.bottom;
+        const margin = {top: 20, right: 10, bottom: 150, left: 60};
+        const width = 400 - margin.left - margin.right;
+        const height = 300 - margin.top - margin.bottom;
 
         d3.select(this.chartRef.current).selectAll("*").remove();
 

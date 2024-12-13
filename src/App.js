@@ -4,7 +4,7 @@ import FileUpload from "./Cleaned_Mobiles_Dataset_Cleaned_Mobiles_Dataset.csv";
 import ProcessData from "./ProcessData";
 import BarChart from "./BarChart";
 import ScatterPlot from "./ScatterPlot";
-
+import TreeMap from "./TreeMap";
 class App extends Component {
     constructor(props) {
         super(props);
@@ -32,8 +32,10 @@ class App extends Component {
                         Daniel Santos Martinez </p>
                 </div>
                 <div className="parent">
-                    <BarChart csv_data={this.state.data}></BarChart>
+                    <TreeMap csv_data={this.state.data}></TreeMap>
                     <ScatterPlot csv_data={this.state.data}></ScatterPlot>
+                    <BarChart csv_data={this.state.data}></BarChart>
+
                 </div>
             </div>
         )
