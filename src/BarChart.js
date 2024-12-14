@@ -15,6 +15,11 @@ class BarChart extends Component {
         this.drawChart();
     }
 
+    
+
+
+
+
     drawChart() {
         const data = this.props.csv_data;
 
@@ -22,8 +27,8 @@ class BarChart extends Component {
         if (!data || data.length === 0) return;
 
         // dimensions of the bar chart
-        const margin = {top: 20, right: 10, bottom: 150, left: 60};
-        const width = 400 - margin.left - margin.right;
+        const margin = {top: 20, right: 0, bottom: 50, left: 42};
+        const width = 320 - margin.left - margin.right;
         const height = 300 - margin.top - margin.bottom;
 
         d3.select(this.chartRef.current).selectAll("*").remove();
@@ -92,7 +97,7 @@ class BarChart extends Component {
         // appended the y axis title
         svg.append("text")
             .attr("transform", "rotate(-90)")
-            .attr("y", 0 - margin.left)
+            .attr("y", 0 - margin.left-5)
             .attr("x", 0 - (height / 2))
             .attr("dy", "1em")
             .style("text-anchor", "middle")

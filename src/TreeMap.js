@@ -21,7 +21,7 @@ class TreeMap extends Component {
         if (!data || data.length === 0) return;
 
         // Define margins and total dimensions
-        const margin = { top: 10, right: 90, bottom:40, left:40 };
+        const margin = { top: 10, right: 90, bottom:40, left:0 };
         const totalWidth = 500; // Increased width to accommodate the legend
         const totalHeight = 350;
 
@@ -191,7 +191,7 @@ class TreeMap extends Component {
             );
 
         // Implement a Scrollable Legend
-        const legendMargin = { top: 20, right: 30, bottom: 20, left: 50 };
+        const legendMargin = { top: 20, right: 30, bottom: 20, left: 10 };
         const legendX = innerWidth + legendMargin.left;
         const legendY = 50;
         const legendWidth = 150;

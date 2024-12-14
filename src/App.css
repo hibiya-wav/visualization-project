@@ -48,3 +48,19 @@
     align-items: center;
     text-align: center;
 }
+
+.slider-container,
+.dropdown-container {
+    margin: 15px 0;
+}
+
+#brandDropdown {
+    padding: 5px;
+    font-size: 16px;
+}
+
+.parent {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
