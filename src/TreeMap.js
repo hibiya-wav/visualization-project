@@ -1,6 +1,6 @@
 import React, { Component, createRef } from "react";
 import * as d3 from "d3";
-import "./TreeMap.css"; 
+import "./TreeMap.css"; // Ensure this file contains the tooltip and legend styles
 
 class TreeMap extends Component {
     constructor(props) {
@@ -39,7 +39,13 @@ class TreeMap extends Component {
             .attr("height", totalHeight) 
             .append("g")
             .attr("transform", `translate(${margin.left},${margin.top})`); // Translate group by margins
-
+            svg
+            .append("text")
+            .attr("x", totalWidth-400 )
+            .attr("y", totalHeight-330)
+            .attr("text-anchor", "center")
+            .style("font-size", "12px")
+            .text("TreeMap of Brands and their ratings")
         // Extract unique brands
         const brands = data.map(d => d.Brand);
         const uniqueBrands = Array.from(new Set(brands));
