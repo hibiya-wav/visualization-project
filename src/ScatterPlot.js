@@ -22,8 +22,8 @@ class ScatterPlot extends Component {
         if (!data || data.length === 0) return;
 
         // dimensions of the scatter plot
-        const margin = {top: 20, right: 20, bottom: 50, left: 35};
-        const width = 370 - margin.left - margin.right;
+        const margin = {top: 20, right: 20, bottom: 50, left: 20};
+        const width = 350 - margin.left - margin.right;
         const height = 300 - margin.top - margin.bottom;
         const innerWidth = width - margin.left - margin.right; 
         const innerHeight = height - margin.top - margin.bottom; 
@@ -90,7 +90,7 @@ class ScatterPlot extends Component {
         svg
             .append("text")
             .attr("transform", "rotate(-90)")
-            .attr("y", margin.left / 2 - 10)
+            .attr("y", margin.left-30)
             .attr("x", -(height / 2 + margin.top))
             .attr("text-anchor", "middle")
             .style("font-size", "12px")
@@ -192,8 +192,8 @@ class ScatterPlot extends Component {
             .style("fill", "black")
             .text((d) => d.Brand);
       const legendMargin = { top: 20, right: 30, bottom: 20, left: 50 };
-            const legendX = innerWidth + legendMargin.left-15;
-            const legendY = 80;
+            const legendX = innerWidth + legendMargin.left-55;
+            const legendY = 100;
             const legendWidth = 150;
             const legendHeight = innerHeight;
     
@@ -205,7 +205,7 @@ class ScatterPlot extends Component {
     
             // Add a title to the legend
             legendGroup.append("text")
-                .attr("x", 0)
+                .attr("x", -25)
                 .attr("y", -10)
                 .attr("text-anchor", "start")
                 .attr("font-size", "12px")
